@@ -16,16 +16,19 @@ import java.util.Map;
 public class UserService {
     private final UserRepository userRepository;
 
+    // REST API Rule 1 : Insert 요청 시 그 행을 DTO에 담아서 리턴
     @Transactional
-    public void 회원가입(UserRequest.JoinDTO joinDTO) {
+    public UserResponse.DTO 회원가입(UserRequest.JoinDTO reqDTO) {
         try {
-            userRepository.save(joinDTO.toEntity());
+            User userPS = userRepository.save(reqDTO.toEntity());
+            return new UserResponse.DTO(userPS);
         } catch (Exception e) {
             throw new Exception400("잘못된 요청입니다");
         }
 
     }
 
+    // TODO : A4 용지에 Id, Username을 적은 후 A4 용지를 서명 (인증서), A4 용지 돌려주기
     public User 로그인(UserRequest.LoginDTO loginDTO) {
         User user = userRepository.findByUsername(loginDTO.getUsername());
 
@@ -49,7 +52,9 @@ public class UserService {
         return dto;
     }
 
-    // 1. 영속화 시키기 (select 조회 - pc들어옴)
+
+    // Rest API Rule 3 : Update된 데이터도 돌려줘야 함
+    // TODO
     @Transactional
     public User 회원정보수정(UserRequest.UpdateDTO updateDTO, Integer userId) {
 
