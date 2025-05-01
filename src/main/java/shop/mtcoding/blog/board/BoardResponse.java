@@ -29,6 +29,22 @@ public class BoardResponse {
     }
 
     @Data
+    public static class UpdateFormDTO {
+        private Integer id; // PK 반드시 포함
+        private String title;
+        private String content;
+        private Boolean isPublic;
+        // userId (개인 식별 키)는 화면에 필요하지 않으면 꺼내면 안됨 (조작 가능) : 세션에서 꺼내기
+
+        public UpdateFormDTO(Board board) {
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+            this.isPublic = board.getIsPublic();
+        }
+    }
+
+    @Data
     public static class ListDTO {
         private List<Board> boards;
         private Integer prev;
